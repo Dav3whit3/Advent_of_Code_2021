@@ -4,11 +4,13 @@ from bs4 import BeautifulSoup
 
 s = requests.Session()
 
-def input_parser(day: str):
+def input_parser(day: str, double_el=False):
     s = requests.Session()
     r = s.get(f"https://adventofcode.com/2021/day/{day}/input",
               cookies={'session': session_id})
     res = r.text.strip().split("\n")
+    if double_el:
+        res = r.text.strip().replace("\n\n", "\n").split("\n")
     
     return res
 
