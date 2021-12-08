@@ -1,6 +1,10 @@
 import requests
-from .env import session_id
+import sys
+sys.path.append('/Users/davidblanco/Documents/personal/Advent_of_Code_2021')
+
 from bs4 import BeautifulSoup
+from .env import session_id
+
 
 s = requests.Session()
 

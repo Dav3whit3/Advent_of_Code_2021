@@ -1,7 +1,7 @@
 import sys
 sys.path.append('/Users/davidblanco/Documents/personal/Advent_of_Code_2021')
-from utils.tools import input_parser, post_answer, current_stars
 from tqdm import tqdm
+from utils.tools import input_parser, post_answer, current_stars
 
 
 def input_wrangler(lst, simple=False):
@@ -10,85 +10,91 @@ def input_wrangler(lst, simple=False):
 
     for elem in lst:
         sp = elem.split(" -> ")
+        f = sp[0].split(",")
+        s = sp[1].split(",")
+        x1, y1 = f[0], f[1]
+        x2, y2 = s[0], s[1]
+        
         if simple:
-            f = sp[0].split(",")
-            s = sp[1].split(",")
-            x1, y1 = f[0], f[1]
-            x2, y2 = s[0], s[1]
-
             if x1 == x2 or y1 == y2:
                 result.append([int(x1), int(y1), int(x2), int(y2)])
         else:
-            result.append(f"{sp[0]},{sp[1]}")
+            result.append([int(x1), int(y1), int(x2), int(y2)])
+
 
     return result
 
 
-def part_1(data):
+def day_5(data, full=False):
 
-    result = list()
+    SET_TRACK = set()
     SET = set()
 
-    for i, elem in enumerate(tqdm(data)):
-        if elem[1] == elem[3]:
-            inner = abs(elem[0] - elem[2]) + 1
-            m = min(elem[0], elem[2])
+    for elem in tqdm(data):
+        
+        x1, y1, x2, y2 = elem[0], elem[1], elem[2], elem[3]
+        if full:
+            diff_x = abs(x1 - x2)
+            diff_y = abs(y1 - y2)
+
+            if diff_x == diff_y:
+
+                start_x = x1 if x1 < x2 else x2
+                start_y = y1 if x1 < x2 else y2
+                end_y = y2 if x1 < x2 else y1
+
+                if (x1 == y1 and x2 == y2) or start_y < end_y:
+                    for i in range(diff_x + 1):
+                        coords = (start_x + i , start_y + i)
+                        if coords in SET_TRACK:
+                            SET.add(coords)
+                        SET_TRACK.add(coords)
+
+
+                elif x1 != y1 or x2 != y2:
+                    if end_y < start_y:
+                        for i in range(diff_x + 1):
+                            coords = (start_x + i, start_y - i)
+                            if coords in SET_TRACK:
+                                SET.add(coords)
+                            SET_TRACK.add(coords)
+
+        if y1 == y2:
+            inner = abs(x1 - x2) + 1
+            m = min(x1, x2)
 
             for i in range(inner):
-                coords = (m+i, elem[3])
-                if coords in result:
+                coords = (m+i, y2)
+                if coords in SET_TRACK:
                     SET.add(coords)
-                result.append(coords)
+                SET_TRACK.add(coords)
 
-        elif elem[0] == elem[2]:
-            inner = abs(elem[1] - elem[3]) + 1
-            m = min(elem[1], elem[3])
+        elif x1 == x2:
+            inner = abs(y1 - y2) + 1
+            m = min(y1, y2)
             for i in range(inner):
-                coords = (elem[0], m+i)
-                if coords in result:
+                coords = (x1, m+i)
+                if coords in SET_TRACK:
                     SET.add(coords)
-
-                result.append(coords)
-
+                SET_TRACK.add(coords)
+                         
     return len(SET)
 
 
 
 
-def part_2(data):
-
-    for i, elem in enumerate(tqdm(data)):
-        print(f"Checking element {elem} -> {i+1} / {len(data)}")
-
-    pass
-
-
-
-
-
-
 if __name__ == '__main__':
-    example = [
-        "0,9 -> 5,9",
-        "8,0 -> 0,8",
-        "9,4 -> 3,4",
-        "2,2 -> 2,1",
-        "7,0 -> 7,4",
-        "6,4 -> 2,0",
-        "0,9 -> 2,9",
-        "3,4 -> 1,4",
-        "0,0 -> 8,8",
-        "5,5 -> 8,2",
-        "2,9 -> 2,9"
-    ]
-    print(current_stars())
-    EXAMPLE = input_wrangler(example, simple=True)
+
     inPut = input_parser(day=5)
-    simple_input = input_wrangler(inPut, simple=True)
-    complex_input = input_wrangler(inPut)
-    print(part_1(simple_input))
-    print(part_1(EXAMPLE))
 
-    part_2(complex_input)
+    part_1_input = input_wrangler(inPut, simple=True)
+    part_2_input = input_wrangler(inPut)
 
+    part_1_result = day_5(part_1_input)
+    part_2_result = day_5(part_2_input ,full=True)
+
+    print(f"{part_1_result=}")
+    print(f"{part_2_result=}")
+
+    print(current_stars())
 
