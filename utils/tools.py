@@ -8,14 +8,18 @@ from .env import session_id
 
 s = requests.Session()
 
-def input_parser(day: str, double_el=False):
+def input_parser(day: str, t=['double_el', 'intlist']):
     s = requests.Session()
     r = s.get(f"https://adventofcode.com/2021/day/{day}/input",
               cookies={'session': session_id})
     res = r.text.strip().split("\n")
-    if double_el:
-        res = r.text.strip().replace("\n\n", "\n").split("\n")
     
+    if t == "double_el":
+        res = r.text.strip().replace("\n\n", "\n").split("\n")
+    elif t == "intlist":
+        sp = res[0].split(",")
+        res =  list(int(elem) for elem in sp)
+        
     return res
 
 

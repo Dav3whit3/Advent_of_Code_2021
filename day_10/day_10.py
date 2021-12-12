@@ -13,7 +13,7 @@ def solution(data, part=1):
     illegal_chars = []
     incomplete_scores = []
 
-    for l_n, line in enumerate(data):
+    for line in data:
         open_stack = []
         for char in line:
             if is_openening(char):
