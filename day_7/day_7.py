@@ -13,8 +13,8 @@ def solution(array, part=1, current_value=0, last_sum=math.inf):
 
 def summ_of_diffs(array, val, part=1):
     if part==2:
-        return reduce(lambda a,b: a+b, ( factorial_summ(abs(i - val)) for i in array) )    
-    return reduce(lambda a,b: a+b, (abs(i - val) for i in array))
+        reduce(lambda a,b: a+b, map(lambda b: + factorial_summ(abs(b - val)), array))
+    return reduce(lambda a,b: a+b, map(lambda b: + abs(b - val), array))
 
 
 def factorial_summ(n):
