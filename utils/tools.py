@@ -1,7 +1,7 @@
 import requests
 import sys
 sys.path.append('/Users/davidblanco/Documents/personal/Advent_of_Code_2021')
-
+import webbrowser
 from bs4 import BeautifulSoup
 from .env import session_id
 
@@ -21,6 +21,11 @@ def input_parser(day: str, t=['double_el', 'intlist']):
         res =  list(int(elem) for elem in sp)
         
     return res
+
+
+def open_exercise_instructions(day):
+    webbrowser.open(f"https://adventofcode.com/2021/day/{day}")
+
 
 
 def current_stars():
