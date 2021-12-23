@@ -1,6 +1,7 @@
 import sys
 sys.path.append('/Users/davidblanco/Documents/personal/Advent_of_Code_2021')
 from utils.tools import input_parser, current_stars, open_exercise_instructions
+from functools import reduce
 
 def solution_part1():
     pass
